@@ -3,6 +3,7 @@ package com.quanxiaoha.ai.robot.controller;
 import com.quanxiaoha.ai.robot.model.AIResponse;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.model.Generation;
 import org.springframework.ai.chat.prompt.Prompt;
@@ -15,7 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author 39366
@@ -54,5 +58,8 @@ public class AliyunBailianController {
                 });
 
     }
+
+
+    private Map<String, List<Message>> chatMemoryStore = new ConcurrentHashMap<>();
 
 }

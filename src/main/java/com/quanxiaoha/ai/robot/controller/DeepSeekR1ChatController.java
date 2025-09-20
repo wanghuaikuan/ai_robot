@@ -8,6 +8,7 @@ import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.deepseek.DeepSeekAssistantMessage;
 import org.springframework.ai.deepseek.DeepSeekChatModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,8 +29,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class DeepSeekR1ChatController {
     @Resource
     private DeepSeekChatModel model;
-    @Autowired
-    private ChatModel chatModel;
+
 
     @GetMapping("/generate")
     public String generate(@RequestParam (required = true,value = "message",defaultValue = "你是谁") String message) {
@@ -37,11 +37,11 @@ public class DeepSeekR1ChatController {
     }
 
 
-    @GetMapping(value = "/generateStream", produces = "text/html;charset=utf-8")
+    @GetMapping(value = "/generateStream", produces = MediaType.TEXT_HTML_VALUE)
     public Flux<String> generateStream(@RequestParam (value = "message",defaultValue = "你是谁") String message) {
         Prompt prompt = new Prompt(new UserMessage(message));
         AtomicBoolean needSeparator =new AtomicBoolean(true);
-        return chatModel.stream(prompt)
+        return model.stream(prompt)
                 .mapNotNull(chatResponse -> {
                     DeepSeekAssistantMessage deepSeekAssistantMessage =(DeepSeekAssistantMessage) chatResponse.getResult().getOutput();
                     String reasoningContent = deepSeekAssistantMessage.getReasoningContent();

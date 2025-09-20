@@ -21,19 +21,19 @@ import reactor.core.publisher.Flux;
 @RequestMapping("/ai")
 public class DeepSeekChatController {
     @Resource
-    private DeepSeekChatModel model;
-    @Autowired
-    private ChatModel chatModel;
+    private DeepSeekChatModel chatModel;
+
 
     @GetMapping("/generate")
-    public String generate(@RequestParam (required = true,value = "message",defaultValue = "你是谁") String message) {
-           return model.call(message);
+    public String generate(@RequestParam (value = "message",defaultValue = "你是谁") String message) {
+           return chatModel.call(message);
     }
 
 
     @GetMapping(value = "/generateStream", produces = "text/html;charset=utf-8")
-    public Flux<String> generateStream(@RequestParam (required = true,value = "message",defaultValue = "你是谁") String message) {
+    public Flux<String> generateStream(@RequestParam (value = "message",defaultValue = "你是谁") String message) {
         Prompt prompt = new Prompt(new UserMessage(message));
-        return chatModel.stream(prompt).mapNotNull(chatResponse ->chatResponse.getResult().getOutput().getText());
+        return chatModel.stream(prompt)
+                .mapNotNull(chatResponse ->chatResponse.getResult().getOutput().getText());
     }
 }

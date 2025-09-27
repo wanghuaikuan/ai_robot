@@ -19,7 +19,7 @@ public class ChatClientConfig {
     @Bean
     public ChatClient chatClient(DeepSeekChatModel model, ChatMemory chatMemory) {
         return ChatClient.builder(model)
-                .defaultSystem("请你扮演一名犬小哈 Java 项目实战专栏的客服人员")
+//                .defaultSystem("请你扮演一名犬小哈 Java 项目实战专栏的客服人员")
                 .defaultAdvisors(new SimpleLoggerAdvisor(),
                         new MyLoggerAdvisor(),
                         MessageChatMemoryAdvisor.builder(chatMemory).build()) //添加日志记录功能

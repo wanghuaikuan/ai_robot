@@ -1,6 +1,10 @@
 server:
   port: 8080
 spring:
+  cassandra:
+    contact-points: 127.0.0.1
+    port: 9042
+    local-datacenter: datacenter1
   ai:
     deepseek:
       api-key: sk-c7a7acd9a03c4a2385a7a98f03a3a759
@@ -14,8 +18,16 @@ spring:
       api-key: sk-0f2d9e334aaf471ea180cafb0f2126d6
       chat:
         options:
-          model: qwen-turbo # 模型名称
+          model: qwen-omni-turbo  # 模型名称
           temperature: 0.7 # 温度值
+    chat:
+      memory:
+        repository:
+          cassandra:
+            keyspace: xiaoha_ai_robot
+            table: t_ai_chat_memory # 表名
+            time-to-live: 1095d # 数据的自动过期时间（1095天 ≈ 3年）
+            initialize-schema: true  # 自动初始化表结构
 logging:
   level:
     org.springframework.ai.chat.client.advisor: debug

@@ -4,6 +4,7 @@ import jakarta.annotation.Resource;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.ChatMemoryRepository;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
+import org.springframework.ai.chat.memory.repository.cassandra.CassandraChatMemoryRepository;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,8 +17,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ChatMemoryConfig {
     @Resource
-    private ChatMemoryRepository chatMemoryRepository;
-
+    //private ChatMemoryRepository chatMemoryRepository;
+    private CassandraChatMemoryRepository chatMemoryRepository;
     @Bean
     public ChatMemory chatMemory(){
         return MessageWindowChatMemory.builder()
